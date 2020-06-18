@@ -1,0 +1,49 @@
+-
+  name: Installation of Wordpress and mariadb
+  host: target2
+  tasks:
+    - name: Install epel-repsitory
+      command: sudo wget http://repo.mysql.com/mysql-community-release-el7-5.noarch.rpm
+
+    - name: Add repositry
+      command: sudo rpm -hiv mysql-community-release-el7-5.noarch.rpm
+
+    - name: Install mysql databasa
+      yum: name={{  item  }} state=installed
+      with_items:
+        - mysql-server
+        - mysql-client
+    
+    - name: start services
+      service: name=mysqld state=started enabled=yes
+
+    - name: create databasa
+      mysql_db: name=shaheendb state=present
+
+    - name: create user
+      mysql_user:
+        name: shaheen
+        password: shaheen@123
+        priv: '*.*:ALL'
+        host: '%'
+        state: present
+
+    - name: install preequisite
+      yum: name={{ item }} state=installed
+      with_items:
+        - httpd
+        - php
+        - php-mysql
+
+    - name: Install Wordpress
+      command: sudo wget http://wordpress.org/latest.tar.gz
+
+    - name: untar
+      command: tar xzvf latest.tar.gz
+
+    - name: copy
+      command: cp -rf Wordpress/* /var/www/html
+
+    - name: copy config
+      command: cp /home/rnadim/ansible/israrul/assignment/wp-config.php /var/www/html
+    
