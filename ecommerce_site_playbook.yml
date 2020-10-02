@@ -1,0 +1,29 @@
+-
+  name: Installind database and ecommerce site
+  hosts: target1
+  tasks:
+    - name:  Install firewall
+      apt: name=firewalld state=installed
+    - name: start firewall service
+      service:
+        name: firewalld
+        state: started
+        enabled: yes
+    - name: allow public and port 3306
+      command: firewall-cmd --permanent --zone=public --add-port=80/tcp
+    - name: Install maria database
+      apt: name=mysql state=installed
+    - name: start database service
+      service:
+        name: mysql
+        state: started
+        enabled: yes
+    - name: create db
+      mysql_db: name=ecomdb state=present
+    - name: create user
+      mysql_user:
+       name: ecomuser
+       password: Passw0rd
+       hosts: localhost
+       priv: '*.*:all'
+       state: present

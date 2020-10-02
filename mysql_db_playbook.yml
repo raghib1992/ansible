@@ -1,0 +1,32 @@
+-
+  name: istalling mysql database
+  hosts: target
+  tasks:
+    - name: install wget
+      yum: name=wget state=installed
+      
+    - name: install repo
+      command: wget http://repo.mysql.com/mysql-community-release-el7-5.noarch.rpm
+
+    - name: run command
+      command: sudo rpm -ivh mysql-community-release-el7-5.noarch.rpm    
+    
+    - name: Install mysql
+      yum: name={{ item }} state=installed
+      with_items:
+        - mysql-server
+        - mysql-client
+    - name: start mysql service
+      service:
+        name: mysql
+        state: started
+        enabled: yes
+    - name: create database
+      mysql_db: name=wpdb state=present
+    - name: create user
+      mysql_user:
+        name: nadim
+        password: nadim@123
+        priv: '*.*:ALL'
+        host: '%'
+        state: 'present'
