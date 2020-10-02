@@ -1,0 +1,3 @@
+- command: cat etc/var/server.log
+  register: command_output
+  failed_when: "'ERROR' in command_output.stdout"

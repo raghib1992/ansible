@@ -1,0 +1,5 @@
+- mail:
+    to: raghib.npti@gmail.com
+    subject: server deployed
+    body: all the task completed deployed
+  ignore_errors: yes   # to ignore error any complete the playbook
