@@ -1,0 +1,17 @@
+# Encrypt Inventory file
+ansible-vault encrypt inventory.txt
+
+ansible-playbook playbook.yml -i inventory.txt -ask-vault-pass
+
+
+# can save password in plian txt file
+ansible-playbook playbook.yml -i inventory -vault-password~./vault_pass.txt
+
+# can run program to get password from file store in secure location in plian .py file
+ansible-playbook playbook.yml -i inventory -vault-password~./vault_pass.py
+
+# to view the encrypted file
+ansible-vault view inventory.txt
+
+# to create a encrypted file
+ansible-vault create inventory.txt
