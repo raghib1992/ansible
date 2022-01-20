@@ -1,0 +1,7 @@
+---
+- name: To create User In Remote Server
+  hosts: all
+  become: true
+  tasks:
+    - name : create user John
+      user: name=John

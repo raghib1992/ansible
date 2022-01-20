@@ -1,0 +1,30 @@
+---
+- hosts: all
+  name: to install apache on all server
+  become: yes
+  tasks:
+  - name: install apache2
+    apt: name=apache2 update_cache=yes state=latest
+    when: ansible_os_family == "Debian"
+
+  - name: Start the apache service
+    service: name=apache2 state=started
+    when: ansible_os_family == "Debian"
+
+  - name: install apache package
+    yum:
+      name: httpd
+      state: installed
+    when: ansible_os_family == "Redhat"
+
+  - name: start the http service
+    service:
+      name: httpd
+      state: started
+    when: ansible_os_family == "Redhat"
+  
+  - name: copy the index file
+    copy:
+      src: /opt/ansible/index.html
+      dest: /var/www/html
+      mode: 0666

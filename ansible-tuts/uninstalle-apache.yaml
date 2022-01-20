@@ -1,0 +1,26 @@
+---
+- hosts: all
+  name: to install apache on all server
+  become: yes
+  tasks:
+  - name: Stop the apache service
+    service: name=apache2 state=stopped
+    when: ansible_os_family == "Debian"
+
+  - name: Uninstall apache2
+    apt: name=apache2 state=absent
+    when: ansible_os_family == "Debian"
+
+  - name: stop the http service
+    service:
+      name: httpd
+      state: stopped
+    when: ansible_os_family == "Redhat"
+
+  - name: Uninstall apache package
+    yum:
+      name: httpd
+      state: removed
+    when: ansible_os_family == "Redhat"
+
+  
