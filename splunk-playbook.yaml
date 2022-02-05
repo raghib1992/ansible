@@ -1,0 +1,35 @@
+---
+- name: Install splunk on ubuntu server
+  hosts: ans-worker
+  become: yes
+  tasks:
+    - name: ping the server
+      ping:
+    - name: Download splunk deb file
+      get_url:
+        url: 'https://download.splunk.com/products/splunk/releases/8.2.4/linux/splunk-8.2.4-87e2dda940d1-linux-2.6-amd64.deb'
+        dest: /opt/
+        mode: '0644'
+    - name: Install a splunk.deb package
+      apt:
+        deb: /opt/splunk-8.2.4-87e2dda940d1-linux-2.6-amd64.deb
+    - name: Accept the license
+      shell: /opt/splunk/bin/splunk start --accept-license --answer-yes --no-prompt
+    - name: Enable init script
+      shell: /opt/splunk/bin/splunk enable boot-start
+    - name: create admin password file
+      copy:
+        dest: "/opt/splunk/etc/system/local/user-seed.conf"
+        content: |
+          [user_info]
+          USERNAME = admin
+          PASSWORD = Splunk-123
+    - name: Remove file admin passwd file
+      file:
+        path: /opt/splunk/etc/passwd
+        state: absent
+    - name: Restart Splunk Service
+      shell: systemctl restart splunkd.service
+
+
+
