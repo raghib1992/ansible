@@ -1,0 +1,2 @@
+webserver_root_directory: /usr/share/nginx/html
+webserver: nginx

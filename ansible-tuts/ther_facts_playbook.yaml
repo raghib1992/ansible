@@ -1,0 +1,29 @@
+- name: Gather Facts not allwed
+  hosts: ec2
+  gather_facts: no
+  become: yes
+  tasks:
+    - name: Installed tomcat
+      yum:
+        name: tomacat
+        state: present
+    
+    - name: Print ansible_facts
+      debug:
+        var: ansible_facts
+---
+- name: Gather Facts
+  hosts: all
+  gather_facts: yes
+  become: yes
+  tasks:
+    - name: filter ansible_facts
+      setup:
+        filter:
+          - {{ ansible_fatcs.distribution }}
+          - {{ ansible_facts.distribution_release }}
+          - {{ ansible_facts.distribution_version }}
+        return: variable_output
+    - name: Print ansible_facts
+      debug:
+        var: variable_output

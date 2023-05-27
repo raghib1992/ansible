@@ -1,0 +1,77 @@
+---
+- hosts: ec2
+  tasks:
+    - copy:
+        content: "Hi Raghib"
+        dest: /tmp/hi.txt
+    - copy:
+        content: "Bye Raghib"
+        dest: /tmp/bye.txt
+    - name: Create a ZIP archive of multiple files, rooted at /path
+        path:
+        - /tmp/hi.txt
+        - /tmp/bye.txt
+        dest: /tmp/bb.zip
+        format: zip
+---
+- name: Create User
+  hosts: ec2
+  tasks:
+    - name: Create user
+      user:
+        name: odoo
+        state: present
+---
+- name: Copy fiel to Remote hosts
+  hosts: ec2
+  become: true
+  vars:
+    PATH: /opt/data
+  tasks:
+    - name: Create Folder 
+      file:
+        path: "{{ PATH }}"
+        state: directory
+    - name: copy conect
+      copy:
+        content: "TopSecret"
+        dest: /opt/data/secret.txt
+---
+- name: Install Webserver
+  hosts: ec2
+  become: true
+  vars_file:
+    - myvars.yaml
+  tasks:
+    - debug:
+      var: webserver
+    - name: Install Nginx Package
+      package:
+        name: "{{ webserver }}"
+        state: present
+    - name: Start Nginx Service
+      service:
+        name: "{{ webserver }}"
+        state: started
+        enabled: yes
+    - name: Create HTML directory
+      file:
+        path: "{{ webserver_root_directory }}"
+        state: directory
+    - name: Deploy Static Website
+      uri:
+        url: https://raw.githubusercontent.com/abdennour/example-static-website/master/index.html
+        dest: "{{ webserver_root_directory }}"
+      tags:
+        - always
+---
+- name: Create User
+  hosts: ec2
+  become: yes
+  vars:
+    USER: doodoo
+  tasks:
+    - name: Create user
+      user:
+        name: "{{ USER }}"
+        state: present
