@@ -1,0 +1,14 @@
+
+- https://api.github.com/users/atoumi/repos is a Githtub API endpoint which list all repositories info of a user. In this is example is my user (atoumi).
+
+- We will create a  playbook that download this file and save in our localhost.
+
+Questions for this assignment
+Create a play inside a playbook file that :
+
+- Target the host "dev1"
+
+- Download this link https://api.github.com/users/<USER>/repos ( replace <USER> by your github username or use my username "atoumi"  )
+
+- Save the downloaded file in /tmp/git-repos.json file in the "localhost" NOT in "dev1".
+

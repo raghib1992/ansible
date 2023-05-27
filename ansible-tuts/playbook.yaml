@@ -40,11 +40,11 @@
 - name: Install Webserver
   hosts: ec2
   become: true
-  vars_file:
+  vars_files:
     - myvars.yaml
   tasks:
     - debug:
-      var: webserver
+        var: webserver
     - name: Install Nginx Package
       package:
         name: "{{ webserver }}"
@@ -60,7 +60,7 @@
         state: directory
     - name: Deploy Static Website
       uri:
-        url: https://raw.githubusercontent.com/abdennour/example-static-website/master/index.html
+        url: https://raw.githubusercontent.com/abdennour/example-static-website/{{ github_branch }}/index.html
         dest: "{{ webserver_root_directory }}"
       tags:
         - always
@@ -75,3 +75,167 @@
       user:
         name: "{{ USER }}"
         state: present
+
+---
+- name: Ping to backend
+  hosts: backend
+  tasks:
+    - ping:
+---
+- name: PLay for discover magic variables
+  hosts: dev, prod
+  tasks:
+    - name: print inventory_hostname
+      debug:
+        vars: inventory_hostname
+    - name: print hostvars
+      debug:
+        vars: hostvars
+    - name: print groups_name
+      debug:
+        vars: groups_name
+    - name: print groups
+      debug:
+        vars: groups
+---
+- name: Install Webserver
+  hosts: dev,prod
+  become: true
+  vars_files:
+    - myvars.yaml
+  tasks:
+    - debug:
+        var: webserver
+    - name: Install Nginx Package
+      package:
+        name: "{{ webserver }}"
+        state: present
+    - name: Start Nginx Service
+      service:
+        name: "{{ webserver }}"
+        state: started
+        enabled: yes
+    - name: Create HTML directory
+      file:
+        path: "{{ webserver_root_directory }}"
+        state: directory
+    - name: Deploy Static Website
+      uri:
+        url: https://raw.githubusercontent.com/abdennour/example-static-website/{{ github_branch }}/{{ item }}
+        dest: "{{ webserver_root_directory }}"
+      tags:
+        - always
+      loop:
+        - index.html
+        - about.html
+    - name: Deploy login page
+      uri:
+        url: https://raw.githubusercontent.com/abdennour/example-static-website/{{ github_branch }}/login.html
+        dest: "{{ webserver_root_directory }}"
+      when: github_branch == 'ansible-course'
+---
+- name: play DRY with loop
+  hosts: databases
+  become: yes
+  tasks:
+  - name: "{{ item }} is installed"
+    package:
+      name: "{{ item }}"
+      state: latest
+    loop:
+      - mysql
+      - mongodb-org
+  - name: "{{ item }} is up"
+    service:
+      name: "{{ item }}"
+      state: started
+    loop:
+      - mysql
+      - mongod
+---
+- name: Create user as per role in relevant hosts
+  hosts: prod,dev
+  become: yes
+  tasks:
+    - name: Create user in dev server
+      user:
+        name: "{{ item }}"
+        state: present
+      when: dev is true
+      loop:
+        - ahmed
+        - mouath
+    - name: Create user in prod server
+      user:
+        name: "{{ item }}"
+        state: present
+      when: prod is true
+      loop:
+        - ali
+---
+- name: Create user as per role in relevant hosts
+  hosts: dev1
+  become: yes
+  tasks:
+    - name: Download file to localhost
+      uri:
+        url: https://api.github.com/users/atoumi/repos
+        dest: /tmp/git-repos.json
+      delegate_to: localhost
+
+---
+- name: play create users per role
+  hosts: dev,prod
+  become: yes
+  vars_files:
+  - vars/31-users.yaml
+  tasks:
+  - name: user exists per its role
+    user:
+      name: "{‌{ item.name }}"
+      password: "{{ item.passowrd | password_hash('sha512') }}"
+      state: present
+    loop: "{‌{ assignment_users }}"
+    when: (item.role == 'developer' and 'dev' in group_names) or (item.role == 'ops' and 'prod' in group_names)
+
+---
+- name: Install Webserver
+  hosts: dev
+  become: yes
+  tasks:
+    - name: Touch files with an optional mode
+      # Copy file with variable from source to target
+      template:
+        src: file.json.j2
+        dest: /tmp/file.json.j2
+---
+name.json.j2
+===== Print App Page ======
+{% for app_page in app_pages %}
+  {{ app.page }}.html is a web page
+{% endfor %}
+===== Print App Users =====
+{% for user in app_users %}
+  {{ user.name }} is with role {{ user.role }}
+{% endfor %}
+# For loop
+- name: Create user as per role in relevant hosts
+  hosts: prod,dev
+  become: yes
+  vars:
+    app_pages:
+      - index 
+      - about
+      - login
+    app_users:
+      - name: raghib
+        role: DevOps
+      - name: Juhi
+        role: Web developer
+      - name: Jitender
+        role: Business developer
+  tasks:
+    - name: Copy file having Jinja Variable to target hosts
+      template:
+        src: name.json.j2
+        dest: /tmp/name.json

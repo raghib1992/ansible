@@ -23,6 +23,8 @@
           - {{ ansible_fatcs.distribution }}
           - {{ ansible_facts.distribution_release }}
           - {{ ansible_facts.distribution_version }}
+          - {{ ansible_facts.processor_cores }}
+          - {{ ansible_facts.memtotal_mb }}
         return: variable_output
     - name: Print ansible_facts
       debug:

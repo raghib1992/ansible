@@ -22,3 +22,6 @@ inventory_hostname  string
 hostvars            key-value pair
 group_names         Array
 groups              key-value pair
+
+
+++++++++++++++++++++++++++++++
