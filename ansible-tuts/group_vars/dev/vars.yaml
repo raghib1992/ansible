@@ -1,1 +1,4 @@
 github_branch: ansible-course
+ansible_user: ec2-user
+ansible_private_key_file: mumbai-key.pem
+ansible_connection: ssh

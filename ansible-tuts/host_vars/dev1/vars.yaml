@@ -1,4 +1,2 @@
 ansible_host: 3.110.166.15
-ansible_connection: ssh
-ansible_user: ec2-user
-ansible_private_key_file: mumbai-key.pem
+

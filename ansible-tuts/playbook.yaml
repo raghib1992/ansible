@@ -1,5 +1,8 @@
 ---
-- hosts: ec2
+# Create file in remote and zip file of multiple file
+- name: Create ZIP file
+  hosts: localhost,ec2
+  become: yes
   tasks:
     - copy:
         content: "Hi Raghib"
@@ -8,12 +11,14 @@
         content: "Bye Raghib"
         dest: /tmp/bye.txt
     - name: Create a ZIP archive of multiple files, rooted at /path
+      archive:
         path:
         - /tmp/hi.txt
         - /tmp/bye.txt
         dest: /tmp/bb.zip
         format: zip
 ---
+# Create User in remote host
 - name: Create User
   hosts: ec2
   tasks:
@@ -22,7 +27,8 @@
         name: odoo
         state: present
 ---
-- name: Copy fiel to Remote hosts
+# Used vars in playbook
+- name: Copy file to Remote hosts
   hosts: ec2
   become: true
   vars:
@@ -37,6 +43,7 @@
         content: "TopSecret"
         dest: /opt/data/secret.txt
 ---
+# Used vars_files in playbook and tags to always replay the module
 - name: Install Webserver
   hosts: ec2
   become: true
@@ -65,6 +72,7 @@
       tags:
         - always
 ---
+# used Vars
 - name: Create User
   hosts: ec2
   become: yes
@@ -82,6 +90,7 @@
   tasks:
     - ping:
 ---
+# Display 4 magic variables
 - name: PLay for discover magic variables
   hosts: dev, prod
   tasks:
@@ -98,6 +107,7 @@
       debug:
         vars: groups
 ---
+# Used Loop inside module instead of play the same module several time for different data
 - name: Install Webserver
   hosts: dev,prod
   become: true
