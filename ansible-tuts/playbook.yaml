@@ -183,7 +183,7 @@
       loop:
         - ali
 ---
-- name: Create user as per role in relevant hosts
+- name: Change hosts to delegate_to localhost or other as mention
   hosts: dev1
   become: yes
   tasks:

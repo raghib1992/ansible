@@ -18,3 +18,6 @@ ansible ec2 -m yum -a 'name=nginx state=latest' --become
 
 # Service module
 ansible ec2 -m service -a 'name=nginx state=started' --become
+
+# Package
+ansible ec2 -m package -a 'name=nginx state=present' --become
