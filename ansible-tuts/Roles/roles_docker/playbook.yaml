@@ -1,0 +1,15 @@
+---
+- name: Example
+  hosts: all
+  roles:
+    - role: bec.docker.docker_ce
+  tasks:
+    - name: Output information about the Docker login step
+      when: docker_login is defined
+      ansible.builtin.debug:
+        var: docker_login
+
+    - name: Output information about the Docker compose step
+      when: docker_compose is defined
+      ansible.builtin.debug:
+        var: docker_compose

@@ -1,0 +1,1 @@
+ec2 ansible_user=ec2-user ansible_host=15.207.19.43 ansible_connection=ssh ansible_port=22 ansible_ssh_private_key_file=./mumbai-key.pem
