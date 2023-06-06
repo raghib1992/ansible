@@ -32,3 +32,43 @@ ${ROOT_DIR_INV}/host_vars/<HOSTNAME>/*.yaml
 ${ROOT_DIR_INV}/group_vars/<GROUP_NAME>.yaml
 
 ${ROOT_DIR_INV}/group_vars/<GROUP_NAME>/*.yaml
+
+
+###############################
+hosts.ini
+web
+192.168.0.1
+
+[db]
+db1.mydomain.local
+db2.mydomain.local
+db3.mydomain.local
+
+[web]
+web1.mydomain.local
+web2.mydomain.local
+web3.mydomain.local
+
+# Gropu of groups
+[prod:children]
+db
+web
+####################################
+hosts.yaml
+
+all:
+    hosts:
+        web.mydomain.com:
+        192.168.0.1
+    customer1:
+        children:
+            db:
+                db1.mydomain.local:
+                db2.mydomain.local:
+                db3.mydomain.local:
+            web:
+                web1.mydomain.local:
+                web2.mydomain.local:
+                web3.mydomain.local:
+
+

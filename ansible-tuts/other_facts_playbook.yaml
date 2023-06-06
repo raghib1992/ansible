@@ -29,3 +29,13 @@
     - name: Print ansible_facts
       debug:
         var: variable_output
+---
+- name: filter ansible fatcs
+  setup:
+    filter:
+      - {{ ansible_facts.distribution }}
+    return: variable_distribution
+
+- name: Echo the file
+  debug:
+    var: variable_distribution
