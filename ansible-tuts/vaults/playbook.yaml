@@ -1,0 +1,10 @@
+---
+- name: playbook with vault
+  hosts: localhost
+  tasks:
+    - name: Include passwordfile
+      ansible.builtin.include_vars:
+        file: mypasswordfile.yaml
+    - name: print the password variable
+      debug:
+        var: mysecret

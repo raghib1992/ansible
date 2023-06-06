@@ -1,0 +1,21 @@
+---
+- name: multiline in yaml playbook
+  hosts: all
+  vars:
+    variable1: |-
+      this is for testing
+      multi lines in yaml
+      for study purpose
+    variable2: >-
+      this is for testing
+      multi lines in yaml
+      for study purpose
+
+  tasks:
+    - name: print variable1
+      debug:
+        msg: "{{ variable1.split('\n') }}"
+
+    - name: print variable2
+      debug:
+        var: variable2

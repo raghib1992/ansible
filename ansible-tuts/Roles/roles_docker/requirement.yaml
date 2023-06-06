@@ -1,2 +1,8 @@
-- src: bec.docker.docker_ce
-  name: bec.docker.docker_ce
+roles:
+  - name: geerlingguy.docker
+
+  - src: https://github.com/companieshouse/ansible-role-apache
+    name: apache
+
+collections:
+  - name: geerlingguy.k8s

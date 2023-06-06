@@ -2,7 +2,7 @@
 - name: Example
   hosts: all
   roles:
-    - role: bec.docker.docker_ce
+    - role: geerlingguy.docker
   tasks:
     - name: Output information about the Docker login step
       when: docker_login is defined
