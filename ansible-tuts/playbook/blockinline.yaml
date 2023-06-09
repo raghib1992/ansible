@@ -1,0 +1,12 @@
+---
+- name: line in file module demo
+  hosts: aws_ec2
+  become: yes
+  tasks:
+    - name: allow password authentication
+      blockinfile:
+        state: present
+        dest: /etc/hosts
+        content: |
+          192.168.0.1 demo demo.example.com
+          192.168.0.2 sample sample.example.com

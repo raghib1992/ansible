@@ -1,0 +1,12 @@
+---
+- name: line in file module demo
+  hosts: aws_ec2
+  become: yes
+  tasks:
+    - name: allow password authentication
+      lineinfile:
+        state: present
+        dest: /etc/ssh/sshd_config
+        regexp: "^PasswordAuthentication"
+        line: PasswordAuthentication yes
+        validate: 'sshd -t -f %s'

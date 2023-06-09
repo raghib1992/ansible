@@ -23,7 +23,7 @@ enable_plugins = aws_ec2
 ### Ref https://docs.ansible.com/ansible/latest/collections/amazon/aws/aws_ec2_inventory.html#ansible-collections-amazon-aws-aws-ec2-inventory
 ```
 plugin: aws_ec2
-region:
+regions:
   - ap-south-1
 profile: default
 filters:
