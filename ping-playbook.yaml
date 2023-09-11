@@ -1,6 +1,0 @@
--
-  name: connectivity test between host and target machine
-  hosts: all
-  tasks:
-    - name: ping test
-      ping:
