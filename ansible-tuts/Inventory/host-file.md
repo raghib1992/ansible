@@ -1,7 +1,8 @@
 # Host file
-## by default- all host file anible take from 
-```
-/etc/ansible/hosts
+## by default- all host file ansible take from 
+
+### **/etc/ansible/hosts**
+```sh
 [defaults]
 inventory = /etc/ansible/hosts
 ```

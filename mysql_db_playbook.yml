@@ -1,5 +1,5 @@
--
-  name: istalling mysql database
+---
+- name: istalling mysql database
   hosts: target
   tasks:
     - name: install wget
