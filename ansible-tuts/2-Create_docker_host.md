@@ -24,3 +24,13 @@ useradd -m ansiuser
 ```
 ssh -i docker ansiuser@localhost -p 2525
 ```
+
+# test ansible ping
+## Inventory file
+```sh
+# inventory.txt
+test_host ansible_host=localhost ansible_connection=ssh ansible_user=ansiuser ansible_ssh_port=2525 ansible_ssh_private_key_file=./docker
+```
+```sh
+ansible test_host -m ping -i inventory.txt
+```

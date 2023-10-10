@@ -1,8 +1,0 @@
--
- name: copy of text file in target server
- host: target1 target2
- tasks:
-  - name: copy module
-    copy:
-     src: /etc/ansibe/ansible.cfg
-     dest: /home/ec2-user
