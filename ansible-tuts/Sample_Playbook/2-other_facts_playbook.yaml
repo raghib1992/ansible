@@ -1,5 +1,7 @@
+---
 - name: Gather Facts not allwed
   hosts: ec2
+  # This will skip the steps of gather fats at playbook run time
   gather_facts: no
   become: yes
   tasks:

@@ -1,7 +1,7 @@
 # ansible
 ## Install ansible
 ```sh
-sudo update 
+sudo apt update 
 sudo apt install -y ansible
 ```
 ### Install using pip

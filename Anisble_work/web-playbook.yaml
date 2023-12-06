@@ -7,9 +7,8 @@
     - name: update
       shell: sudo apt-get update -y
     - name: Install python and all it's dependencies
-      apt: name=['software-properties-common', 'python', 'python-setuptools', 'python-dev', 'build-essential', 'python-pip', 'python-mysqldb', 'mysql-server', 'mysql-client',
-'flask', 'git'] state=installed
-          
+      apt: name=['software-properties-common', 'python', 'python-setuptools', 'python-dev', 'build-essential', 'python-pip', 'python-mysqldb', 'mysql-server', 'mysql-client', 'flask', 'git'] state=installed
+   
     - name: Start mysql service
       service:
        name: mysql

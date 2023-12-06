@@ -10,6 +10,10 @@
     - copy:
         content: "Bye Raghib"
         dest: /tmp/bye.txt
+    - name: copy module from source to destination
+      copy:
+        src: /etc/ansibe/ansible.cfg
+        dest: /home/ec2-user
     - name: Create a ZIP archive of multiple files, rooted at /path
       archive:
         path:
@@ -77,7 +81,7 @@
   hosts: ec2
   become: yes
   vars:
-    USER: doodoo
+    USER: bob
   tasks:
     - name: Create user
       user:
@@ -85,6 +89,7 @@
         state: present
 
 ---
+# ping
 - name: Ping to backend
   hosts: backend
   tasks:
@@ -219,15 +224,6 @@
         src: file.json.j2
         dest: /tmp/file.json.j2
 ---
-name.json.j2
-===== Print App Page ======
-{% for app_page in app_pages %}
-  {{ app.page }}.html is a web page
-{% endfor %}
-===== Print App Users =====
-{% for user in app_users %}
-  {{ user.name }} is with role {{ user.role }}
-{% endfor %}
 # For loop
 - name: Create user as per role in relevant hosts
   hosts: prod,dev
@@ -240,7 +236,7 @@ name.json.j2
     app_users:
       - name: raghib
         role: DevOps
-      - name: Juhi
+      - name: Uzma
         role: Web developer
       - name: Jitender
         role: Business developer
@@ -249,3 +245,15 @@ name.json.j2
       template:
         src: name.json.j2
         dest: /tmp/name.json
+---
+- name: Fetch file from remote
+  hosts: ec2_host
+  become: true
+  vars:
+    log_file: "/var/log/audit/audit.log"
+    dump_file: "logs"
+  tasks:
+    - name: fetch data
+      ansible.builtin.fetch:
+        src: "{{ log_file }}"
+        dest: "{{ dump_file }}"
