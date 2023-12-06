@@ -1,0 +1,21 @@
+To convert Excel to JSON using Ansible, you can use the `community.general.xlrd` module to read the Excel file and then use the `community.general.json_query` filter to convert the data to JSON. Here's a basic example:
+```yaml
+- name: Read Excel and Convert to JSON
+ hosts: localhost
+ tasks:
+   - name: Install xlrd Python module
+     pip:
+       name: xlrd
+   - name: Read Excel and Convert to JSON
+     community.general.xlrd:
+       path: /path/to/your/excel/file.xlsx
+     register: excel_data
+   - name: Convert to JSON
+     set_fact:
+       json_data: "{{ excel_data.rows | to_nice_json }}"
+   - name: Display JSON data
+     debug:
+       var: json_data
+```
+Make sure to replace "/path/to/your/excel/file.xlsx" with the actual path to your Excel file. The resulting JSON data will be stored in the `json_data` variable.
+Note: Ensure you have the `xlrd` Python module installed. You can install it using the `pip` module in Ansible, as shown in the example.
