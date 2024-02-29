@@ -1,3 +1,16 @@
+1. Ansible gather facts using setup module
+2. setup module play by default
+3. ansible stores all the facts in varibae called "ansible_facts"
+4. playbook for get ansible facts
+![alt text](image-2.png)
+5. To skip gathering facts task , add in playbook
+```
+gather_facts: no
+```
+6. also disbale gatheirng facts from make gethering= explicit in ansible.cfg file
+
+
+```json
 "ansible_facts": {
     "all_ipv4_addresses": [
         "172.31.38.136"
@@ -529,3 +542,4 @@
     "virtualization_tech_host": [],
     "virtualization_type": "xen"
 }
+```

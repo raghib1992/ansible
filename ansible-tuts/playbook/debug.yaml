@@ -1,0 +1,12 @@
+- 
+  name: out in register
+  hosts: localhost
+  tasks:
+    - name: register
+      shell: cat /etc/ansible/hosts
+      register: result
+    - debug:
+        var: result.stdout_lines
+
+
+# also you can use -v option in command to see output
