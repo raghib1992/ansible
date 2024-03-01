@@ -6,3 +6,8 @@ ansible-playbook <playbook> --extra-vars webserver=nginx
 ```sh
 ansible-galaxy init <role name>
 ```
+
+### You haveCommand for a custom dynamic inventory script named aws_inventory.py.
+```
+ansible-inventory --list -i aws_inventory.py
+```
